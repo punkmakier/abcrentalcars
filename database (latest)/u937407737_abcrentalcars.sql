@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1:3306
--- Generation Time: Dec 12, 2022 at 01:09 PM
--- Server version: 10.5.16-MariaDB-cll-lve
--- PHP Version: 7.2.34
+-- Host: 127.0.0.1
+-- Generation Time: Dec 28, 2022 at 02:08 PM
+-- Server version: 10.4.24-MariaDB
+-- PHP Version: 8.1.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -80,7 +80,12 @@ INSERT INTO `accounts` (`id`, `license`, `profile`, `surname`, `firstname`, `mid
 (38, 'Abctest1234', '', 'Virtudazo', 'Louise', 'Test', 'louisevirtudazo@gmail.com', '09214376236', 'testuser', '$2y$10$8hOAvvkAUNeHcu0cMJHpRegVYbHZOYGUK672dAdHODnwVH6NgXRWW', 'Customer', 'inbound4508353513020999282.jpg', 1, '2022-12-12 02:11:28'),
 (39, 'Abc123test', '', 'TestMacro Lastname', 'TestMacro Firstname', 'TestMacro Middlename', 'TestMacro@test.com', '123456789', 'testmacro', '$2y$10$GSykYpaylykk/rO0ALGZXO3KSBhUtxksJaDEziMejsn9qYbeDAgJW', 'Macro', 'Maroon and Green Greyscale Photo Basketball Stats UAAPNCAA Instagram Post.png', 1, '2022-12-12 02:19:52'),
 (40, 'testmacro', '', 'testmacro', 'testmacro', 'testmacro', 'testmacro1@test.com', '1234567', 'testmacro', '$2y$10$p3aPsvRL5XcEvh9zUEZrGujRhG81xZgMwsARLwStjKh7kUlgo.NVm', 'Macro', 'Maroon and Green Greyscale Photo Basketball Stats UAAPNCAA Instagram Post.png', 1, '2022-12-12 02:24:02'),
-(41, 'Abc123test', '', 'testmicro', 'testmicro', 'testmicro', 'testmicro@test.com', '12345', 'testmicro', '$2y$10$.RVRbOuqtPJcUAGUDf4FMe7l4.IxGc4sWiW4f9B8sl/FZTTIeqC8e', 'Micro', 'Maroon and Green Greyscale Photo Basketball Stats UAAPNCAA Instagram Post.png', 1, '2022-12-12 03:17:03');
+(41, 'Abc123test', '', 'testmicro', 'testmicro', 'testmicro', 'testmicro@test.com', '12345', 'testmicro', '$2y$10$.RVRbOuqtPJcUAGUDf4FMe7l4.IxGc4sWiW4f9B8sl/FZTTIeqC8e', 'Micro', 'Maroon and Green Greyscale Photo Basketball Stats UAAPNCAA Instagram Post.png', 1, '2022-12-12 03:17:03'),
+(42, 'customer', '', 'c', 'c', 'c', 'carbamark123@gmail.com', '+639471559441', 'customer', '$2y$10$XcKGv41U7wTv9TKWuRSTNOFH02vpVe.HA1Lz5JiRzMxQS/IERWRqm', 'Customer', 'Capture.PNG', 1, '2022-12-15 09:34:50'),
+(43, '123', '', 'macro', 'm', 'm', 'punkmakier18@gmail.com', '123', 'macro', '$2y$10$mTd8hDqdKVSh4INh5TiqbuZTBEffK0OfGbgpjIJjOYzsYpDMEfixW', 'Macro', 'f.PNG', 1, '2022-12-15 09:48:35'),
+(45, 'a', '', 's', 's', 's', 'klintoiyas@gmail.com', '232', 'd', '$2y$10$qcV9hbtLpBVrcY86r4VQSelyQN6seQYUYJazv2IO4NDTkUURGjehS', 'Customer', 'Mahindra-Scorpio-N-300620221053.jpg', 1, '2022-12-15 10:41:56'),
+(46, '123456test', '', 'Reroma', 'Aj', 'Sample', 'carbamark@gmail.com', '+639471559441', 'aj', '$2y$10$Y2Wzt59PJLp.Wjb0hoQfpudbb2dKotutkU759rZzwMNiSKrzHRiRa', 'Micro', 'f.PNG', 1, '2022-12-28 12:17:38'),
+(47, 'customerTestOnly', '', 'Ctest', 'TestCustomer', 'T', 'punkmakier19@gmail.com', '56151561', 'customer1', '$2y$10$/My385RmdkdM6.SjuymIo.SUVP.6.SgxNXngCpihO7NhZnwOKQG.C', 'Customer', 'bg-hompage.jpg', 1, '2022-12-28 12:30:13');
 
 -- --------------------------------------------------------
 
@@ -112,19 +117,9 @@ CREATE TABLE `cars` (
 --
 
 INSERT INTO `cars` (`id`, `accounts_id`, `images`, `manufacturer`, `no_of_doors`, `fuel_tank_capacity`, `seating_capacity`, `transmission_type`, `gear_box`, `model`, `color`, `year`, `rate`, `fuel_type`, `rulesandregulations`, `date`) VALUES
-(30, 8, '86.jpg', 'Toyota', 2, '40L', '4', 'Manual', '8', '86', 'Black', 2020, 5500, 'Gas', '<p>1. Never use in offroad</p>\r\n\r\n<p>2. Never go on humps</p>\r\n', '2022-06-24 05:22:05'),
-(31, 8, 'avanza.jpg', 'Toyota', 5, '35L', '7', 'Automatic', '4', 'Avanza', 'Black', 2018, 6500, 'Gas', '', '2022-06-24 05:28:11'),
-(32, 8, 'montero.jpg', 'Mitsubishi', 5, '50L', '8', 'Automatic', '7', 'Montero Sport', 'White', 2018, 5700, 'Diesel', '', '2022-06-24 05:29:32'),
-(33, 8, 'fortuner.jpg', 'Toyota', 5, '46L', '7', 'Manual', '8', 'Fortuner', 'White', 2020, 9500, 'Diesel', '', '2022-06-24 06:27:33'),
-(34, 8, 'nissan_urvan_nv350_25l_premium_1630167267_d9b6afa1_progressive.jpg', 'Nissan', 4, '50L', '12', 'Automatic', '8', 'Urvan NV350 Premium', 'Silver', 2021, 6700, 'Diesel', '', '2022-06-24 06:28:28'),
-(35, 8, 'supergrandia.jpeg', 'Toyota', 5, '50L', '7', 'Automatic', '7', 'Hiace Super Grandia', 'White', 2018, 6200, 'Diesel', '', '2022-06-24 06:29:17'),
-(36, 16, 'w2.jpg', 'Toyota', 4, '35L', '5', 'Automatic', '4', 'Wigo G', 'Yellow', 2021, 1200, 'Gas', '', '2022-06-24 06:30:12'),
-(37, 16, 'v4.jpg', 'Toyota', 5, '35L', '5', 'Manual', '4', 'Vios', 'Red', 2020, 2500, 'Gas', '', '2022-06-24 06:31:12'),
-(38, 16, 'civ2.jpg', 'Honda', 5, '35L', '5', 'Manual', '4', 'Civic', 'Silver', 2015, 1100, 'Gas', '', '2022-06-24 06:31:53'),
-(39, 16, 'almera.jpg', 'Nissan', 5, '35L', '5', 'Manual', '4', 'Almera', 'Silver', 2020, 1460, 'Gas', '', '2022-06-24 06:33:09'),
-(40, 8, '2023_nissan_kicks_e-power.jpg', 'Nissan', 5, '45L', '5', 'Automatic', '5', 'Kicks', 'White', 2022, 4400, 'Gas', '', '2022-10-08 06:38:59'),
-(42, 8, 'ciaz1.jpg', 'Suzuki', 5, '43L', '5', 'Automatic', '4', 'Ciaz', 'White', 2018, 2800, 'Gas', '<p>For city driving only!</p>\r\n', '2022-12-05 08:08:40'),
-(43, 41, 'Maroon and Green Greyscale Photo Basketball Stats UAAPNCAA Instagram Post.png', 'Mitsubishi', 2, '15', '12', 'Manual', 'test', 'Test model', 'White', 2015, 12, 'Gas', '<p>RULES TEST</p>\r\n', '2022-12-12 03:18:24');
+(44, 43, 'Mahindra-Scorpio-N-300620221053.jpg', 'Hyundai', 5, '30', '8', 'Automatic', 'test', 'test', 'green', 2020, 6100, 'Diesel', '<p>Good nice and test</p>\r\n', '2022-12-15 09:51:02'),
+(45, 43, 'BYD-Atto-3-111020221714.jpg', 'Honda', 4, '25', '4', 'Manual', 'ge', 'testttt', 'blue', 2019, 2500, 'Gas', '<p>testing</p>\r\n', '2022-12-15 10:12:59'),
+(46, 46, 'White-Volkswagen-Car-PNG-Free-File-Download.png', 'Volkswagen', 5, '30', '6', 'Manual', 'test', 'Test Model', 'White', 2020, 9500, 'Diesel', '<p>Nice car test sample.</p>\r\n', '2022-12-28 12:28:15');
 
 -- --------------------------------------------------------
 
@@ -214,7 +209,16 @@ INSERT INTO `chat` (`id`, `reference`, `sender`, `receiver`, `message`, `positio
 (71, 'ABC996649', 'Nick Liwag Hernandez', 'Raven Faith Santos Ricardo', 'Thank you for your reservation. Your reference code is ABC996649', 0, '2022-12-08 15:38:46'),
 (72, 'ABC970222', 'Mae Ann Laguna Magsaysay', 'Louise Test Virtudazo', 'Thank you for your reservation. Your reference code is ABC970222', 0, '2022-12-12 02:17:37'),
 (73, 'ABC970222', 'Louise Test Virtudazo', 'Mae Ann Laguna Magsaysay', 'Test Chat', 1, '2022-12-12 02:18:09'),
-(74, 'ABC576494', 'testmicro testmicro testmicro', 'Louise Test Virtudazo', 'Thank you for your reservation. Your reference code is ABC576494', 0, '2022-12-12 03:20:11');
+(74, 'ABC576494', 'testmicro testmicro testmicro', 'Louise Test Virtudazo', 'Thank you for your reservation. Your reference code is ABC576494', 0, '2022-12-12 03:20:11'),
+(75, 'ABC244600', 'Nick Liwag Hernandez', 'c c c', 'Thank you for your reservation. Your reference code is ABC244600', 0, '2022-12-15 09:45:00'),
+(76, 'ABC614028', 'm m macro', 'c c c', 'Thank you for your reservation. Your reference code is ABC614028', 0, '2022-12-15 09:54:58'),
+(77, 'ABC614028', 'm m macro', 'm m macro', 'Hi', 0, '2022-12-15 09:55:48'),
+(78, 'ABC614028', 'c c c', 'm m macro', 'hello', 1, '2022-12-15 09:56:01'),
+(79, 'ABC709852', 'm m macro', 'c c c', 'Thank you for your reservation. Your reference code is ABC709852', 0, '2022-12-15 10:27:30'),
+(80, 'ABC114914', 'Aj Sample Reroma', 'TestCustomer T Ctest', 'Thank you for your reservation. Your reference code is ABC114914', 0, '2022-12-28 12:33:16'),
+(81, 'ABC376492', 'm m macro', 'TestCustomer T Ctest', 'Thank you for your reservation. Your reference code is ABC376492', 0, '2022-12-28 12:47:06'),
+(82, 'ABC692453', 'm m macro', 'TestCustomer T Ctest', 'Thank you for your reservation. Your reference code is ABC692453', 0, '2022-12-28 12:48:28'),
+(83, 'ABC796139', 'Aj Sample Reroma', 's s s', 'Thank you for your reservation. Your reference code is ABC796139', 0, '2022-12-28 12:55:47');
 
 -- --------------------------------------------------------
 
@@ -293,7 +297,7 @@ CREATE TABLE `transactions` (
   `to` varchar(255) NOT NULL,
   `rate_per_day` int(11) NOT NULL,
   `days_rented` int(11) NOT NULL,
-  `total` int(11) NOT NULL,
+  `total` int(11) NOT NULL DEFAULT 0,
   `reference` varchar(255) NOT NULL,
   `status` varchar(255) NOT NULL,
   `reason` longtext DEFAULT NULL,
@@ -305,17 +309,12 @@ CREATE TABLE `transactions` (
 --
 
 INSERT INTO `transactions` (`id`, `customer_id`, `owners_id`, `cars_id`, `destination`, `purpose`, `from`, `to`, `rate_per_day`, `days_rented`, `total`, `reference`, `status`, `reason`, `date`) VALUES
-(35, 23, 16, 38, 'Laguna', '', '10/12/2022', '10/15/2022', 1100, 2, 2200, 'ADL791758', 'Approved', NULL, '2022-10-01 02:46:56'),
-(36, 25, 8, 30, 'Batangas', '', '10/18/2022', '10/20/2022', 5500, 2, 11000, 'ADL490889', 'Approved', NULL, '2022-10-01 08:11:34'),
-(37, 25, 8, 31, 'Laguna', '', '10/23/2022', '10/25/2022', 6500, 2, 13000, 'ADL440110', 'Approved', NULL, '2022-10-01 08:13:19'),
-(43, 32, 8, 30, 'asdasdasdasd', '', '11/10/2022', '11/18/2022', 5500, 8, 44000, 'ADL691198', 'Pending', NULL, '2022-11-10 05:11:42'),
-(44, 32, 8, 31, 'sfsdfsdfsdf', '', '11/25/2022', '11/30/2022', 6500, 5, 32500, 'ADL978939', 'Pending', NULL, '2022-11-10 05:13:58'),
-(45, 11, 8, 40, 'Tagaytay', 'Staycation', '11/20/2022', '11/24/2022', 2800, 4, 11200, 'ADL519484', 'Pending', NULL, '2022-11-17 00:25:48'),
-(46, 11, 8, 31, 'Antipolo', 'Family Reunion', '12/12/2022', '12/15/2022', 6500, 3, 19500, 'ADL641488', 'Pending', NULL, '2022-12-08 10:43:04'),
-(47, 11, 8, 32, 'Baguio', 'Vacation', '12/25/2022', '12/28/2022', 5700, 3, 17100, 'ABC344946', 'Pending', NULL, '2022-12-08 15:17:21'),
-(48, 11, 8, 31, 'Tagaytay', 'Outing', '12/19/2022', '12/22/2022', 6500, 3, 19500, 'ABC996649', 'Pending', NULL, '2022-12-08 15:38:46'),
-(49, 38, 16, 38, 'Test', 'Test', '12/12/2022', '12/12/2022', 1100, 1, 1100, 'ABC970222', 'Pending', NULL, '2022-12-12 02:17:37'),
-(50, 38, 41, 43, 'Test', 'Test', '12/24/2022', '12/24/2022', 12, 0, 0, 'ABC576494', 'Approved', NULL, '2022-12-12 03:20:11');
+(52, 42, 43, 44, 'Moalboal', 'Going home', '12/15/2022', '12/20/2022', 6100, 5, 30500, 'ABC614028', 'Approved', 'test', '2022-12-16 09:54:58'),
+(53, 42, 43, 44, 'Moalboal', 'Travel', '12/15/2022', '12/19/2022', 6100, 5, 20000, 'ABC709852', 'Approved', NULL, '2022-12-16 16:00:00'),
+(54, 47, 46, 46, 'Moalboal', 'Unwind', '12/28/2022', '12/31/2022', 9500, 4, 38000, 'ABC114914', 'Approved', NULL, '2022-12-28 12:33:16'),
+(55, 47, 43, 44, 'Iloilo', 'Travelling', '12/28/2022', '12/30/2022', 6100, 3, 18300, 'ABC376492', 'Pending', NULL, '2022-12-28 12:47:06'),
+(56, 47, 43, 45, 'Moalboal', 'TOR,Hon. Dismissal,Good Moral and I like to ask my NSTP Serial Num req. sch', '01/01/2023', '01/07/2023', 2500, 7, 17500, 'ABC692453', 'Pending', NULL, '2022-12-28 12:48:28'),
+(57, 45, 46, 46, 'Moalboal', 'Travel', '01/15/2023', '01/18/2023', 9500, 4, 38000, 'ABC796139', 'Cancelled', 'just cancel', '2022-12-28 12:55:47');
 
 --
 -- Indexes for dumped tables
@@ -365,19 +364,19 @@ ALTER TABLE `transactions`
 -- AUTO_INCREMENT for table `accounts`
 --
 ALTER TABLE `accounts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT for table `cars`
 --
 ALTER TABLE `cars`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- AUTO_INCREMENT for table `chat`
 --
 ALTER TABLE `chat`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
 
 --
 -- AUTO_INCREMENT for table `editpage`
@@ -395,7 +394,7 @@ ALTER TABLE `manufacturers`
 -- AUTO_INCREMENT for table `transactions`
 --
 ALTER TABLE `transactions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
