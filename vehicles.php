@@ -12,12 +12,14 @@ if(isset($_POST['search'])) {
 	$price_filter  = post('price_filter');
 	$price_range   = post('price_range');
 	$fuel_type 	   = post('fuel_type');
-	$data = get_vehicles($manufacturers,$price_filter,$price_range,$fuel_type);
+	$user_type 	   = post('user_type');
+	$data = get_vehicles($manufacturers,$price_filter,$price_range,$fuel_type,$user_type);
 } else {
 	$manufacturers = null;
 	$price_filter  = null;
 	$price_range   = null;
 	$fuel_type 	   = null;
+	$user_type 	   = null;
 	$seating_capacity 	   = null;
 	$data = get_vehicles();
 }
@@ -278,6 +280,21 @@ if($_GET['step'] == 4) {
 								</select>
 							</div>
 
+							
+							<h4>User Type</h4>
+							<div style="padding:20px">
+								<select name="user_type" class="customize" id="" required>
+									<option value="All"
+										<?= $user_type !== null ? $user_type == 'All' ? 'selected' : '' : ''?>>All
+									</option>
+									<option value="Micro"
+										<?= $user_type !== null ? $user_type == 'Micro' ? 'selected' : '' : ''?>>Micro
+									</option>
+									<option value="Macro"
+										<?= $user_type !== null ? $user_type == 'Macro' ? 'selected' : '' : ''?>>Macro
+									</option>
+								</select>
+							</div>
 						
 
 							<div style="padding:20px;margin-top:-20px">
@@ -599,7 +616,7 @@ if($_GET['step'] == 4) {
 
 <div style="display: none;">
 <?php
-      foreach(get_all_transactions() as $owner) { ?>
+      foreach(get_all_transactions2($cars_id) as $owner) { ?>
                        
 <?php  $owner['from'].' '.$owner['to']."<br>" ?>
 	
@@ -616,7 +633,7 @@ $to[] = date('Y-m-d', strtotime($owner['to']));
 $period = new DatePeriod(
      new DateTime($owner['from']),
      new DateInterval('P1D'),
-     new DateTime(date('Y-m-d', strtotime("+1 day", strtotime($owner['to']))))
+     new DateTime(date('Y-m-d', strtotime($owner['to'])))
 );
 
 foreach ($period as $key => $value) {
@@ -658,7 +675,7 @@ foreach ($period as $key => $value) {
         isInvalidDate: function(date) {
          i = 0;
            check = [<?php echo $alldate ?>]
-           for (var i = 0; i < check. length; i++) {
+           for (var i = 0; i <= check. length; i++) {
             if (date.format('YYYY-MM-DD') ==  check[i]) {
                 return true; 
             }
@@ -697,7 +714,7 @@ foreach ($period as $key => $value) {
   
  
   $('.totalrate').val(hiderate*$days)
-  $('#days').val($days)
+  $('#days').val($days+1)
 
 
  $('.showrate').val('₱'+ new Intl.NumberFormat('en-IN', {

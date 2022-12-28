@@ -35,9 +35,106 @@ alert('Email already exists');
 }
 </style>
         ";
-        echo "<script>swal ( 'Success' ,  'Account has been successfuly registered. Please wait for approval' ,  'success' )</script>";
+
+        require './vendors/PHPMailerAutoload.php';
+        $mail = new PHPMailer;
+
+        //$mail->SMTPDebug = 3;                               // Enable verbose debug output
+
+        $mail->isSMTP();                                      // Set mailer to use SMTP
+        $mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
+        $mail->SMTPAuth = true;                               // Enable SMTP authentication
+        $mail->Username = 'klintoiyas@gmail.com';                 // SMTP username
+        $mail->Password = 'nnkvpptsjbfxflmj';                           // SMTP password
+        $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
+        $mail->Port = 587;                                    // TCP port to connect to
+
+        $mail->setFrom('klintoiyas@gmail.com', 'Mailer');
+        $mail->addAddress($register_email, 'New Entry');     // Add a recipient
+
+        $mail->isHTML(true);                                  // Set email format to HTML
+
+        $mail->Subject = 'Request Registration';
+        $mail->Body    = 'Thank you for registering to our website please wait for the action of admin.';
+
+        if(!$mail->send()) {
+            echo "<script>swal ( 'Error!' ,  'Something went wrong...' ,  'error' )</script>";
+        } else {
+            echo "<script>swal ( 'Success' ,  'Account has been successfuly registered. Please wait for approval' ,  'success' )</script>";
+        }
+
+
+
     }
 }
+
+function forgotPassword($register_email){
+    global $db;
+    $checker = $db->query("SELECT * FROM accounts WHERE email = '$register_email'");
+    if($checker->num_rows > 0) {
+        $data = mysqli_fetch_assoc($checker);
+        // send link here
+        require './vendors/PHPMailerAutoload.php';
+        $mail = new PHPMailer;
+
+        //$mail->SMTPDebug = 3;                               // Enable verbose debug output
+
+        $mail->isSMTP();                                      // Set mailer to use SMTP
+        $mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
+        $mail->SMTPAuth = true;                               // Enable SMTP authentication
+        $mail->Username = 'klintoiyas@gmail.com';                 // SMTP username
+        $mail->Password = 'nnkvpptsjbfxflmj';                           // SMTP password
+        $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
+        $mail->Port = 587;                                    // TCP port to connect to
+
+        $mail->setFrom('klintoiyas@gmail.com', 'Mailer');
+        $mail->addAddress($register_email, 'New Entry');     // Add a recipient
+
+        $mail->isHTML(true);                                  // Set email format to HTML
+
+        $mail->Subject = 'Forgot Password Request';
+        $mail->Body    = "To change your new password, please click this link: <a href='http://localhost/abcrentalcars/changepassword.php?id=".$data['id']."'>http://localhost/abcrentalcars/changepassword.php</a> ";
+
+        if(!$mail->send()) {
+            echo "<script>swal ( 'Error!' ,  'Something went wrong...' ,  'error' )</script>";
+        } else {
+            echo "<script>swal ( 'Success' ,  'Request has been sent. Please check your email' ,  'success' )</script>";
+        }
+    }else{
+        echo "<script src='https://unpkg.com/sweetalert/dist/sweetalert.min.js'></script>";
+        echo"
+        <style>
+        .swal-button {
+  padding: 7px 19px;
+  border-radius: 2px;
+  background-color: #FF8C00;
+  font-size: 12px;
+  border: 1px solid #3e549a;
+  text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.3);
+}
+        .swal-button:hover {
+    background-color: #FFD580;
+    text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.3);
+}
+</style>
+        ";
+        echo "<script>swal ( 'Failed' ,  'Email not registered.' ,  'error' )</script>";
+
+    }
+}
+function changeAccPassword($id,$pass){
+    global $db;
+    $checker = $db->query("UPDATE `accounts` SET password='$pass' WHERE id = '$id'");
+    if($checker){
+        echo "<script>
+            window.location.href='http://localhost/abcrentalcars/changepassword.php?id=$id&status=success';
+        </script>";
+
+    }else{
+        return false;
+    }
+}
+
 
 function get_account_details($id) {
     global $db;
@@ -190,7 +287,7 @@ function get_manufacturer_if_exists($id) {
     return $db->query("SELECT * FROM manufacturers WHERE id = $id")->num_rows;
 }
 
-function get_vehicles($manufacturers = null,$price_filter = null,$price_range = null,$fuel_type = null) {
+function get_vehicles($manufacturers = null,$price_filter = null,$price_range = null,$fuel_type = null, $ownerType = null) {
     global $db;
     if($manufacturers == 'All') {
         $pre_condition1 = "";
@@ -208,6 +305,16 @@ function get_vehicles($manufacturers = null,$price_filter = null,$price_range = 
         }
     }
 
+    if($ownerType == 'All') {
+        $pre_condition2 = "";
+    } else {
+        if($manufacturers == 'All') {
+            $pre_condition2 = "WHERE user_type = '$ownerType'";
+        } else {
+            $pre_condition2 = " AND user_type = '$ownerType'";
+        }
+    }
+
     if($price_range == 0) {
         $pre_condition3 = "";
     } elseif($price_range == 10000) {
@@ -219,7 +326,11 @@ function get_vehicles($manufacturers = null,$price_filter = null,$price_range = 
         }
 
 
-    } else {
+    }
+    
+
+    
+    else {
         $price  = explode('-',$price_range);
         $from   = $price[0];
         $to     = $price[1];
@@ -375,6 +486,12 @@ function get_all_accounts_not_approved() {
     return $db->query("SELECT *,COUNT(id) AS totalnotapproved FROM accounts WHERE status = 0 AND user_type = 'Customer' OR status = 0 AND user_type = 'Micro' OR status = 0 AND user_type = 'Macro'");
 }
 
+function get_all_accounts_rejected() {
+    global $db;
+    return $db->query("SELECT *,COUNT(id) AS totalrejected FROM accounts WHERE status = 2 AND user_type = 'Customer' OR status = 2 AND user_type = 'Micro' OR status = 2 AND user_type = 'Macro'");
+}
+
+
 function get_all_total_profit() {
     global $db;
     return $db->query("SELECT *,SUM(total) AS totalprofit FROM transactions WHERE owners_id = '".$_SESSION['owners_id']."' AND status = 'Approved'");
@@ -395,6 +512,12 @@ function get_all_total_bookings() {
     return $db->query("SELECT *,COUNT(id) AS totalbookings FROM transactions WHERE owners_id = '".$_SESSION['owners_id']."' AND status = 'Approved'");
 }
 
+function get_all_total_pendingbookings() {
+    global $db;
+    return $db->query("SELECT *,COUNT(id) AS pendingbookings FROM transactions WHERE owners_id = '".$_SESSION['owners_id']."' AND status = 'Pending'");
+}
+
+
 function get_all_customers() {
     global $db;
     return $db->query("SELECT * FROM accounts WHERE user_type = 'Customer'");
@@ -412,9 +535,12 @@ function get_all_accounts_notapproved2() {
 
 function get_all_transactions() {
     global $db;
-    return $db->query("SELECT * FROM transactions");
+    return $db->query("SELECT * FROM transactions WHERE cars_id = '12'");
 }
-
+function get_all_transactions2($carsID) {
+    global $db;
+    return $db->query("SELECT * FROM transactions WHERE cars_id = '$carsID' AND status = 'Pending' OR status = 'A/pproved'");
+}
 function get_all_editpage_aboutus() {
     global $db;
     return $db->query("SELECT * FROM editpage WHERE id = 1");
@@ -458,8 +584,50 @@ function update_owner_status($id,$status) {
     global $db;
     $query = $db->query("UPDATE accounts SET status = $status WHERE id = $id");
     if($query) {
-        $message = "Account status has been updated!";
+
+        $query2 = $db->query("SELECT `email` FROM `accounts` WHERE id = $id");
+        $stmt = mysqli_fetch_assoc($query2);
+        $email = $stmt['email'];
+
+        require '../../vendors/PHPMailerAutoload.php';
+        $mail = new PHPMailer;
+
+        // $mail->SMTPDebug = 3;                               // Enable verbose debug output
+
+        $mail->isSMTP();                                      // Set mailer to use SMTP
+        $mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
+        $mail->SMTPAuth = true;                               // Enable SMTP authentication
+        $mail->Username = 'klintoiyas@gmail.com';                 // SMTP username
+        $mail->Password = 'nnkvpptsjbfxflmj';                           // SMTP password
+        $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
+        $mail->Port = 587;                                    // TCP port to connect to
+
+        $mail->setFrom('klintoiyas@gmail.com', 'Mailer');
+        $mail->addAddress($email, 'New Entry');     // Add a recipient
+
+        $mail->isHTML(true);                                  // Set email format to HTML
+
+        if($status == 1){
+            $mail->Subject = 'Accepted';
+            $mail->Body    = "Hi, your account has been <b style='color: green;'>accepted</b> to our system";
+        }
+        else if($status == 2){
+            $mail->Subject = 'Rejected';
+            $mail->Body    = "Hi, your account has been <b style='color: red;'>rejected</b> to our system";
+        }
+        
+
+        if(!$mail->send()) {
+            $message = "Something went wrong...";
             echo "<script type='text/javascript'>alert('$message');</script>";
+
+        } else {
+            $message = "Account status has been updated!";
+            echo "<script type='text/javascript'>alert('$message');</script>";
+        }
+
+
+        
     }
 }
 
@@ -686,6 +854,14 @@ function get_customer_transactions($owners_id) {
     return $db->query("SELECT * FROM transactions WHERE status = 'Approved' AND owners_id = '$owners_id'"); // validate if username already exist
 }
 
+function get_customer_pendingtransactions($owners_id) {
+    global $db;
+    return $db->query("SELECT * FROM transactions WHERE status = 'Pending' AND owners_id = '$owners_id'"); // validate if username already exist
+}
+
+
+
+
 function encryption($data) {
     $plaintext = $data;
     $key = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
@@ -710,4 +886,64 @@ function decryption($data) {
     {
         return $original_plaintext;
     }
+}
+
+function getDayProfit($id){
+    global $db;
+    for($i = 0; $i < 7; $i+=1){
+        if($i == 0){
+            $sqlQ = $db->query("SELECT SUM(`total`) as totalDayProfit FROM transactions WHERE `owners_id`= '$id' AND `status`='Approved' AND DATE_FORMAT(`date`, '%Y-%m-%d') = CURDATE()");
+            $stmt = mysqli_fetch_assoc($sqlQ);
+            echo '"'.$stmt['totalDayProfit'].'"'.",";
+
+    
+        }else{
+            $sqlQ = $db->query("SELECT SUM(`total`) as totalDayProfit FROM transactions WHERE `owners_id`='$id' AND `status`='Approved' AND DATE(`date`) = CURDATE()+$i");
+            $stmt = mysqli_fetch_assoc($sqlQ);
+            echo '"'.$stmt['totalDayProfit'].'"'.",";
+        }
+
+        
+    }
+
+   
+}
+
+
+function dayName($id){
+    global $db;
+
+            $sqlQ = $db->query("SELECT `date` as dayName FROM transactions WHERE `owners_id`= '$id' AND `status`='Approved'");
+            while($stmt = mysqli_fetch_assoc($sqlQ)){
+                $converted = substr($stmt['dayName'],0,10);
+                $newDateName = date('l', strtotime($converted));
+                echo '"'.$newDateName.'"'.",";
+            } 
+}
+
+function getDailyProfit($id){
+    global $db;
+    $sqlQ = $db->query("SELECT SUM(`total`) as dailyProfit FROM transactions WHERE `owners_id`='$id' AND `status`='Approved' AND DATE_FORMAT(`date`, '%Y-%m-%d') = CURDATE();");
+    $stmt = mysqli_fetch_assoc($sqlQ);
+    echo $stmt['dailyProfit'];
+                
+}
+
+function getWeeklyProfit($id){
+    global $db;
+    $sqlQ = $db->query("SELECT SUM(`total`) as weeklyProfit FROM transactions WHERE `owners_id`='$id' AND `status`='Approved' AND YEARWEEK(`date`, 1) = YEARWEEK(CURDATE(), 1)");
+    $stmt = mysqli_fetch_assoc($sqlQ);
+    echo $stmt['weeklyProfit'];
+                
+}
+
+function getMonthlyProfit($id){
+    global $db;
+    $sqlQ = $db->query("SELECT SUM(`total`)  as monyhlyProfit
+    FROM transactions
+    WHERE `owners_id`='$id' AND `status`='Approved' AND MONTH(date) = MONTH(CURRENT_DATE())
+    AND YEAR(date) = YEAR(CURRENT_DATE())");
+    $stmt = mysqli_fetch_assoc($sqlQ);
+    echo $stmt['monyhlyProfit'];
+                
 }

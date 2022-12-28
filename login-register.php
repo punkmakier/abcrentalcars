@@ -19,6 +19,10 @@ if(isset($_POST['login_button'])) {
     $login_password = post('login_password');
     secureLogin($login_username,$login_password);
 }
+if(isset($_POST['forgotPass'])){
+    $email = $_POST['forgot_pass_email'];
+    forgotPassword($email);
+}
 ?>
 <div id="overlay_block"></div>
     <div class="admin-form-content sign_register_block">
@@ -145,7 +149,7 @@ if(isset($_POST['login_button'])) {
     </div>
     <div class="admin-form-content forgot_passwd_block">
         <div class="admin-form-block">
-            <form class="main-form admin-form" action="#">
+            <form class="main-form admin-form" method="POST" >
                 <div class="main_form_navigation">
                     <div id="tab_forgot_passwd" class="title-form current" value=""></div>
                 </div>
@@ -153,7 +157,7 @@ if(isset($_POST['login_button'])) {
                     <input id="forgot_pass_email" class="input_placeholder" type="email" value=""
                         placeholder="Email address" name="forgot_pass_email" required/>
                     <div id="forgot_pass_text"> We will send you the password in few minutes.</div>
-                    <input class="admin-form-submit orange_button" type="submit" href="#forgotpass" value="Continue" />
+                    <input class="admin-form-submit orange_button" type="submit" name="forgotPass" value="Continue" />
                     <div class="admin_form_link">
                         <span class="sign_in"><a class="tab_link_button" href="#sign_in" title="">Sign In</a></span>
                     </div>

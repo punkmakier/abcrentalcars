@@ -1,5 +1,7 @@
 <?php include '../../config/functions.php'?>
+<?php include '../../config/config.php'?>
 <?php 
+error_reporting(0);
 if($_SESSION['owners_id'] == 0) {
     header('location: index.php');
 } else {
@@ -181,7 +183,7 @@ if(isset($_GET['logout']) == 'true') {
                         <div class="col-lg-4" >
                             <div class="card" style="background-color: #465985;">
                                 <div class="card-body">
-                                    <h2 class="text-white"><?php $i=1; foreach(get_all_total_profit() as $totalprofit) { echo $totalprofit['totalprofit']; } ?></h2>
+                                    <h2 class="text-white"><?php $i=1; foreach(get_all_total_profit() as $totalprofit) { echo "₱ ".number_format($totalprofit['totalprofit'],2); } ?></h2>
                                     <h4 class="text-white">Total Profit</h4>
                                  
                                 </div>
@@ -205,19 +207,110 @@ if(isset($_GET['logout']) == 'true') {
                                 </div>
                             </div>
                         </div>
+                        <div class="col-lg-4" data-toggle="modal" data-target="#pendingbookings" style="cursor: pointer;">
+                            <div class="card" style="background-color: #4CC6BF;">
+                                <div class="card-body">
+                                   <h2 class="text-white"><?php $i=1; foreach(get_all_total_pendingbookings() as $totalbookings) { echo $totalbookings['pendingbookings']; } ?></h2>
+                                    <h4 class="text-white">Pending Bookings</h4>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+
+        
+            <div style="float: right; margin-left: 30px;">
+                <h5>Daily Profit: <b><?php getDailyProfit($_SESSION['owners_id']); ?></b></h5>
+            </div>
+            <div style="float: right; margin-left: 30px;">
+                <h5>Weekly Profit: <b><?php getWeeklyProfit($_SESSION['owners_id']); ?></b> </h5>
+            </div>
+            <div style="float: right; margin-left: 30px;">
+                <h5>Monthly Profit: <b><?php getMonthlyProfit($_SESSION['owners_id']); ?></b></h5>
+            </div>
+
+            <div id="myChart"></div>
+            
         </div>
     </div>
     <!-- End Page -->
-
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
     <!-- Footer -->
     <footer class="site-footer">
         <div class="site-footer-legal">© <?=date('Y')?> <a href="javascript:void(0)">ABC Car Rental Inc.</a></div>
     </footer>
     <!-- Core  -->
+    <script>
+   var options = {
+          series: [
+          {
+            name: "High - 2013",
+            data: [ <?php getDayProfit($_SESSION['owners_id'])?> ]
+          },
+        ],
+          chart: {
+          height: 350,
+          type: 'line',
+          dropShadow: {
+            enabled: true,
+            color: '#000',
+            top: 18,
+            left: 7,
+            blur: 10,
+            opacity: 0.2
+          },
+          toolbar: {
+            show: false
+          }
+        },
+        colors: ['#77B6EA', '#545454'],
+        dataLabels: {
+          enabled: true,
+        },
+        stroke: {
+          curve: 'smooth'
+        },
+        title: {
+          text: 'Daily Profits',
+          align: 'left'
+        },
+        grid: {
+          borderColor: '#e7e7e7',
+          row: {
+            colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+            opacity: 0.5
+          },
+        },
+        markers: {
+          size: 1
+        },
+        xaxis: {
+          categories: [
+            <?php dayName($_SESSION['owners_id'])?>
+          ],
+          title: {
+            text: 'Days Profit'
+          }
+        },
+        yaxis: {
+          title: {
+            text: 'Daily Profits'
+          }
+        },
+        legend: {
+          position: 'top',
+          horizontalAlign: 'right',
+          floating: true,
+          offsetY: -25,
+          offsetX: -5
+        }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#myChart"), options);
+        chart.render();
+    </script>
     <script src="../assets/vendor/babel-external-helpers/babel-external-helpers.js"></script>
     <script src="../assets/vendor/jquery/jquery.js"></script>
     <script src="../assets/vendor/popper-js/umd/popper.min.js"></script>
@@ -356,3 +449,54 @@ if(isset($_GET['logout']) == 'true') {
     </div>
   </div>
 </div>
+
+
+
+
+<div class="modal fade" id="pendingbookings" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">Bookings</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body table-responsive">
+        <table class="table">
+            <tr>
+                <th>Customer</th>
+                <th>Destination</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Rate per Day</th>
+                <th>Days</th>
+                <th>Total</th>
+                <th>Reference</th>
+                <th>Status</th>
+            </tr>
+                <?php foreach(get_customer_pendingtransactions($_SESSION['owners_id']) as $row) { ?>
+                    <?php $rdata = get_account_details($row['customer_id']);?>
+                    <tr>
+                        <td><?php echo $rdata['firstname'].' '.$rdata['middlename'].' '.$rdata['surname']?></td>
+                        <td><?php echo $row['destination']?></td>
+                        <td><?php echo $row['from']?></td>
+                        <td><?php echo $row['to']?></td>
+                        <td>₱<?php echo number_format($row['rate_per_day'],2)?></td>
+                        <td><?php echo $row['days_rented']?></td>
+                        <td>₱<?php echo number_format($row['total'],2)?></td>
+                        <td><?php echo $row['reference']?></td>
+                        <td><?php echo $row['status']?></td>
+                    </tr>
+                <?php } ?>
+            
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+

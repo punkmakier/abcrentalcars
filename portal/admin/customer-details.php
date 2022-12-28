@@ -260,6 +260,8 @@
                                                             <select name="status" class="form-control">
                                                                 <option value="0" <?=$rows['status'] == 0 ? 'selected' : ''?>>Inactive</option>
                                                                 <option value="1" <?=$rows['status'] == 1 ? 'selected' : ''?>>Active</option>
+                                                                <option value="2" <?=$rows['status'] == 2 ? 'selected' : ''?>>Reject</option>
+
                                                             </select>
                                                         </div>
                                                     </div>

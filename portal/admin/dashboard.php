@@ -217,6 +217,16 @@ if(isset($_GET['logout']) == 'true') {
                                 </div>
                             </a>
                         </div>
+                        <div class="col-lg-4" style="cursor: pointer;">
+                            <a href="notapprovedaccounts.php" style="text-decoration: none;">   
+                                <div class="card" style="background-color: #4CC6BF;">
+                                    <div class="card-body">
+                                       <h2 class="text-white"><?php $i=1; foreach(get_all_accounts_rejected() as $totalnotapproved) { echo $totalnotapproved['totalrejected']; } ?></h2>
+                                        <h4 class="text-white">Total Accounts Rejected</h4>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
