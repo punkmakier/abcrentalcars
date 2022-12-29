@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 28, 2022 at 02:08 PM
+-- Generation Time: Dec 29, 2022 at 11:38 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -218,7 +218,14 @@ INSERT INTO `chat` (`id`, `reference`, `sender`, `receiver`, `message`, `positio
 (80, 'ABC114914', 'Aj Sample Reroma', 'TestCustomer T Ctest', 'Thank you for your reservation. Your reference code is ABC114914', 0, '2022-12-28 12:33:16'),
 (81, 'ABC376492', 'm m macro', 'TestCustomer T Ctest', 'Thank you for your reservation. Your reference code is ABC376492', 0, '2022-12-28 12:47:06'),
 (82, 'ABC692453', 'm m macro', 'TestCustomer T Ctest', 'Thank you for your reservation. Your reference code is ABC692453', 0, '2022-12-28 12:48:28'),
-(83, 'ABC796139', 'Aj Sample Reroma', 's s s', 'Thank you for your reservation. Your reference code is ABC796139', 0, '2022-12-28 12:55:47');
+(83, 'ABC796139', 'Aj Sample Reroma', 's s s', 'Thank you for your reservation. Your reference code is ABC796139', 0, '2022-12-28 12:55:47'),
+(84, 'ABC542379', 'Aj Sample Reroma', 'TestCustomer T Ctest', 'Thank you for your reservation. Your reference code is ABC542379', 0, '2022-12-29 09:19:21'),
+(85, 'ABC268147', 'Aj Sample Reroma', 'TestCustomer T Ctest', 'Thank you for your reservation. Your reference code is ABC268147', 0, '2022-12-29 09:29:23'),
+(86, 'ABC742038', 'Aj Sample Reroma', 'TestCustomer T Ctest', 'Thank you for your reservation. Your reference code is ABC742038', 0, '2022-12-29 09:29:51'),
+(87, 'ABC645965', 'm m macro', 'TestCustomer T Ctest', 'Thank you for your reservation. Your reference code is ABC645965', 0, '2022-12-29 09:30:56'),
+(88, 'ABC706413', 'Aj Sample Reroma', 'TestCustomer T Ctest', 'Thank you for your reservation. Your reference code is ABC706413', 0, '2022-12-29 09:44:23'),
+(89, 'ABC692561', 'm m macro', 'TestCustomer T Ctest', 'Thank you for your reservation. Your reference code is ABC692561', 0, '2022-12-29 10:04:52'),
+(90, 'ABC951235', 'Aj Sample Reroma', 'TestCustomer T Ctest', 'Thank you for your reservation. Your reference code is ABC951235', 0, '2022-12-29 10:05:17');
 
 -- --------------------------------------------------------
 
@@ -301,20 +308,28 @@ CREATE TABLE `transactions` (
   `reference` varchar(255) NOT NULL,
   `status` varchar(255) NOT NULL,
   `reason` longtext DEFAULT NULL,
-  `date` timestamp NOT NULL DEFAULT current_timestamp()
+  `date` timestamp NOT NULL DEFAULT current_timestamp(),
+  `dayName` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `transactions`
 --
 
-INSERT INTO `transactions` (`id`, `customer_id`, `owners_id`, `cars_id`, `destination`, `purpose`, `from`, `to`, `rate_per_day`, `days_rented`, `total`, `reference`, `status`, `reason`, `date`) VALUES
-(52, 42, 43, 44, 'Moalboal', 'Going home', '12/15/2022', '12/20/2022', 6100, 5, 30500, 'ABC614028', 'Approved', 'test', '2022-12-16 09:54:58'),
-(53, 42, 43, 44, 'Moalboal', 'Travel', '12/15/2022', '12/19/2022', 6100, 5, 20000, 'ABC709852', 'Approved', NULL, '2022-12-16 16:00:00'),
-(54, 47, 46, 46, 'Moalboal', 'Unwind', '12/28/2022', '12/31/2022', 9500, 4, 38000, 'ABC114914', 'Approved', NULL, '2022-12-28 12:33:16'),
-(55, 47, 43, 44, 'Iloilo', 'Travelling', '12/28/2022', '12/30/2022', 6100, 3, 18300, 'ABC376492', 'Pending', NULL, '2022-12-28 12:47:06'),
-(56, 47, 43, 45, 'Moalboal', 'TOR,Hon. Dismissal,Good Moral and I like to ask my NSTP Serial Num req. sch', '01/01/2023', '01/07/2023', 2500, 7, 17500, 'ABC692453', 'Pending', NULL, '2022-12-28 12:48:28'),
-(57, 45, 46, 46, 'Moalboal', 'Travel', '01/15/2023', '01/18/2023', 9500, 4, 38000, 'ABC796139', 'Cancelled', 'just cancel', '2022-12-28 12:55:47');
+INSERT INTO `transactions` (`id`, `customer_id`, `owners_id`, `cars_id`, `destination`, `purpose`, `from`, `to`, `rate_per_day`, `days_rented`, `total`, `reference`, `status`, `reason`, `date`, `dayName`) VALUES
+(52, 42, 43, 44, 'Moalboal', 'Going home', '12/15/2022', '12/20/2022', 6100, 5, 30500, 'ABC614028', 'Approved', 'test', '2022-12-16 09:54:58', ''),
+(53, 42, 43, 44, 'Moalboal', 'Travel', '12/15/2022', '12/19/2022', 6100, 5, 20000, 'ABC709852', 'Approved', NULL, '2022-12-16 16:00:00', ''),
+(54, 47, 46, 46, 'Moalboal', 'Unwind', '12/28/2022', '12/31/2022', 9500, 4, 38000, 'ABC114914', 'Pending', NULL, '2022-12-28 12:33:16', ''),
+(55, 47, 43, 44, 'Iloilo', 'Travelling', '12/28/2022', '12/30/2022', 6100, 3, 18300, 'ABC376492', 'Pending', NULL, '2022-12-28 12:47:06', ''),
+(56, 47, 43, 45, 'Moalboal', 'TOR,Hon. Dismissal,Good Moral and I like to ask my NSTP Serial Num req. sch', '01/01/2023', '01/07/2023', 2500, 7, 17500, 'ABC692453', 'Pending', NULL, '2022-12-28 12:48:28', ''),
+(57, 45, 46, 46, 'Moalboal', 'Travel', '01/15/2023', '01/18/2023', 9500, 4, 38000, 'ABC796139', 'Cancelled', 'just cancel', '2022-12-28 12:55:47', ''),
+(58, 47, 46, 46, 'Moalboal', 'Travel', '01/01/2023', '01/03/2023', 9500, 3, 28500, 'ABC542379', 'Pending', NULL, '2022-12-29 09:19:21', ''),
+(59, 47, 46, 46, 'Iloilo', 'Going home', '01/24/2023', '01/31/2023', 9500, 8, 76000, 'ABC268147', 'Pending', NULL, '2022-12-29 09:29:23', ''),
+(60, 47, 46, 46, 'Iloilo', 'Going home', '12/29/2022', '12/31/2022', 9500, 3, 28500, 'ABC742038', 'Pending', NULL, '2022-12-29 09:29:51', ''),
+(61, 47, 43, 44, 'Moalboal', 'Going home', '01/01/2023', '01/31/2023', 6100, 31, 189100, 'ABC645965', 'Pending', NULL, '2022-12-29 09:30:56', ''),
+(62, 47, 46, 46, 'Moalboal', 'Going home', '01/04/2023', '01/23/2023', 9500, 20, 190000, 'ABC706413', 'Pending', NULL, '2022-12-29 09:44:23', ''),
+(63, 47, 43, 45, 'Moalboal', 'Travel', '01/08/2023', '01/10/2023', 2500, 3, 7500, 'ABC692561', 'Pending', NULL, '2022-12-29 10:04:52', 'Thursday'),
+(64, 47, 46, 46, 'Moalboal', 'Going home', '02/01/2023', '02/03/2023', 9500, 3, 28500, 'ABC951235', 'Approved', NULL, '2022-12-29 10:05:17', 'Thursday');
 
 --
 -- Indexes for dumped tables
@@ -376,7 +391,7 @@ ALTER TABLE `cars`
 -- AUTO_INCREMENT for table `chat`
 --
 ALTER TABLE `chat`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=91;
 
 --
 -- AUTO_INCREMENT for table `editpage`
@@ -394,7 +409,7 @@ ALTER TABLE `manufacturers`
 -- AUTO_INCREMENT for table `transactions`
 --
 ALTER TABLE `transactions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
