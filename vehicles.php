@@ -54,7 +54,8 @@ if($_GET['step'] == 4) {
 	$days_rented  = post('days_rented');
 	$reference	  = 'ABC'.rand(111111,999999);
 	$status		  = 'Pending';
-	transactions($customer_id,$cars_id,$destination,$purpose,$from,$to,$rate_per_day,$days_rented,$total,$reference,$status);
+	$dayName = date('l');
+	transactions($customer_id,$cars_id,$destination,$purpose,$from,$to,$rate_per_day,$days_rented,$total,$reference,$status,$dayName);
 }
 ?>
 <!DOCTYPE html>
@@ -156,6 +157,7 @@ if($_GET['step'] == 4) {
 </head>
 
 <body class="page page-two-column">
+
 	<div id="conteiner">
 		<div id="branding">
 			<?php include 'navigation.php';?>
@@ -650,10 +652,11 @@ foreach ($period as $key => $value) {
  $date = json_encode($date);
 // $from = json_encode($from);
 //  str_replace( array('[',']') , ''  , $from );
-// $to = json_encode($to);
-//  str_replace( array('[',']') , ''  , $to );
+$to = json_encode($to);
+ str_replace( array('[',']') , ''  , $to );
+  $alldate = str_replace( array('[',']') , ''  ,  $date.",".$to);
+// print_r($alldate);
 
-  $alldate = str_replace( array('[',']') , ''  , $date );
 ?>
 
 	<script>
@@ -675,7 +678,7 @@ foreach ($period as $key => $value) {
         isInvalidDate: function(date) {
          i = 0;
            check = [<?php echo $alldate ?>]
-           for (var i = 0; i <= check. length; i++) {
+           for (var i = 0; i <= check.length; i++) {
             if (date.format('YYYY-MM-DD') ==  check[i]) {
                 return true; 
             }

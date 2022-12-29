@@ -689,7 +689,7 @@ function update_content_rules($rules) {
 
 
 
-function transactions($customer_id,$cars_id,$destination,$purpose,$from,$to,$rate_per_day,$days_rented,$total,$reference,$status) {
+function transactions($customer_id,$cars_id,$destination,$purpose,$from,$to,$rate_per_day,$days_rented,$total,$reference,$status,$dayName) {
     global $db;
     $check = $db->query("SELECT * FROM transactions WHERE customer_id = '$customer_id'  AND `from` = '$from' AND `to` = '$to'"); // validate if username already exist
     if($check->num_rows > 0) {
@@ -702,7 +702,7 @@ function transactions($customer_id,$cars_id,$destination,$purpose,$from,$to,$rat
         $owners_id    = $data['accounts_id'];
         $senderName = $rowSender['firstname'].' '.$rowSender['middlename'].' '.$rowSender['surname']; 
         $receiverName = $rowReceiver['firstname'].' '.$rowReceiver['middlename'].' '.$rowReceiver['surname']; 
-        $query = $db->query("INSERT INTO transactions (customer_id,owners_id,cars_id,destination,purpose,`from`,`to`,rate_per_day,days_rented,total,reference,status) VALUES ('$customer_id','$owners_id','$cars_id','$destination','$purpose','$from','$to','$rate_per_day','$days_rented','$total','$reference','$status')");
+        $query = $db->query("INSERT INTO transactions (customer_id,owners_id,cars_id,destination,purpose,`from`,`to`,rate_per_day,days_rented,total,reference,status,dayName) VALUES ('$customer_id','$owners_id','$cars_id','$destination','$purpose','$from','$to','$rate_per_day','$days_rented','$total','$reference','$status','$dayName')");
 
         if($query) {
             $message = 'Thank you for your reservation. Your reference code is '.$reference;
@@ -888,37 +888,27 @@ function decryption($data) {
     }
 }
 
-function getDayProfit($id){
+function getDayProfit($id,$dayName){
     global $db;
-    for($i = 0; $i < 7; $i+=1){
-        if($i == 0){
-            $sqlQ = $db->query("SELECT SUM(`total`) as totalDayProfit FROM transactions WHERE `owners_id`= '$id' AND `status`='Approved' AND DATE_FORMAT(`date`, '%Y-%m-%d') = CURDATE()");
-            $stmt = mysqli_fetch_assoc($sqlQ);
-            echo '"'.$stmt['totalDayProfit'].'"'.",";
-
-    
-        }else{
-            $sqlQ = $db->query("SELECT SUM(`total`) as totalDayProfit FROM transactions WHERE `owners_id`='$id' AND `status`='Approved' AND DATE(`date`) = CURDATE()+$i");
-            $stmt = mysqli_fetch_assoc($sqlQ);
-            echo '"'.$stmt['totalDayProfit'].'"'.",";
-        }
-
-        
+    $sqlQ = $db->query("SELECT SUM(`total`) as totalDayProfit FROM transactions WHERE `owners_id`= '$id' AND `status`='Approved' AND `dayName`='$dayName'");
+    $stmt = mysqli_fetch_assoc($sqlQ);
+    if($stmt['totalDayProfit'] != ""){
+        echo $stmt['totalDayProfit'];
+    }else{
+        echo "0";
     }
-
-   
 }
 
 
 function dayName($id){
     global $db;
 
-            $sqlQ = $db->query("SELECT `date` as dayName FROM transactions WHERE `owners_id`= '$id' AND `status`='Approved'");
-            while($stmt = mysqli_fetch_assoc($sqlQ)){
-                $converted = substr($stmt['dayName'],0,10);
-                $newDateName = date('l', strtotime($converted));
-                echo '"'.$newDateName.'"'.",";
-            } 
+    $sqlQ = $db->query("SELECT `date` as dayName FROM transactions WHERE `owners_id`= '$id' AND `status`='Approved'");
+    while($stmt = mysqli_fetch_assoc($sqlQ)){
+        $converted = substr($stmt['dayName'],0,10);
+        $newDateName = date('l', strtotime($converted));
+        echo '"'.$newDateName.'"'.",";
+    } 
 }
 
 function getDailyProfit($id){

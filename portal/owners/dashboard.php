@@ -247,7 +247,20 @@ if(isset($_GET['logout']) == 'true') {
           series: [
           {
             name: "High - 2013",
-            data: [ <?php getDayProfit($_SESSION['owners_id'])?> ]
+            data: [ <?php getDayProfit($_SESSION['owners_id'],"Monday");
+              echo ",";
+              getDayProfit($_SESSION['owners_id'],"Tuesday");
+              echo ",";
+              getDayProfit($_SESSION['owners_id'],"Wednesday");
+              echo ",";
+              getDayProfit($_SESSION['owners_id'],"Thursday");
+              echo ",";
+              getDayProfit($_SESSION['owners_id'],"Friday");
+              echo ",";
+              getDayProfit($_SESSION['owners_id'],"Saturday");
+              echo ",";
+              getDayProfit($_SESSION['owners_id'],"Sunday");
+            ?> ]
           },
         ],
           chart: {
@@ -287,9 +300,7 @@ if(isset($_GET['logout']) == 'true') {
           size: 1
         },
         xaxis: {
-          categories: [
-            <?php dayName($_SESSION['owners_id'])?>
-          ],
+          categories: ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
           title: {
             text: 'Days Profit'
           }
